@@ -32,21 +32,20 @@ def dropboxAuth():
     accessTokenFileOverwrite = open("accessToken.txt", "w+")
 
     flow = dropbox.client.DropboxOAuth2FlowNoRedirect(app_key, app_secret)
-    authorize_url = flow.start()
 
     # Have the user sign in and authorize this token
     authorize_url = flow.start()
-    print '1. Go to: ' + authorize_url
-    print '2. Click "Allow" (you might have to log in first)'
-    print '3. Copy the authorization code.'
-    code = raw_input("Enter the authorization code here: ").strip()
+    print('1. Go to: ' + authorize_url)
+    print('2. Click "Allow" (you might have to log in first)')
+    print('3. Copy the authorization code.')
+    code = input("Enter the authorization code here: ").strip()
 
     try:
         # This will fail if the user enters an invalid authorization code
         access_token, user_id = flow.finish(code)
         accessTokenFileOverwrite.write(access_token)
     except:
-        print "failed authorization, restart"
+        print("failed authorization, restart")
         accessTokenFileOverwrite.close()
         os.remove("accessToken.txt")
 
@@ -78,15 +77,17 @@ try:
         pir.wait_for_motion()
         print("motion")
         GPIO.output(relay_pin, 0)
-        filename = datetime.now().strftime("%Y-%m-%d_%H.%M.%S.h264")
-        camera.start_recording("/home/pi/videos/" + filename)
+        filename = "/home/pi/videos/" + datetime.now().strftime("%Y-%m-%d_%H.%M.%S.h264")
+        camera.start_recording(filename)
            
         pir.wait_for_no_motion()
         print("no motion")
         GPIO.output(relay_pin, 1)
         camera.stop_recording()
         camera.close()
+        print("uploading to Dropbox")
         dropboxUpload(filename)
+        print("uploaded to Dropbox")
 finally:
     camera.close()
     pir.close()
