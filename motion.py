@@ -58,7 +58,7 @@ def dropboxUpload(fileToUpload):
 
     # get access token from file
     accessTokenFileRead = open("accessToken.txt", "r")
-    access_token = accessTokenFileRead.read()
+    access_token = accessTokenFileRead.read().rstrip()
     accessTokenFileRead.close()
 
     # make client
