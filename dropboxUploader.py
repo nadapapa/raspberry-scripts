@@ -50,8 +50,6 @@ def dropboxUpload(fileToUpload):
     response = client.put_file(fileToUpload, fileToUploadObject)
     fileToUploadObject.close()
 
-    return 1
-
 if __name__ == "__main__":
     import sys
     sys.exit(dropboxUpload(sys.argv[1]))
