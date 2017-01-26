@@ -31,6 +31,9 @@ try:
         GPIO.output(relay_pin, 0)
         filename = "/home/pi/videos/" + datetime.now().strftime("%Y-%m-%d_%H.%M.%S.h264")
         camera.capture("/home/pi/motion.jpg")
+        p = subprocess.Popen(["mpack", "-s", "motion detected", "/home/pi/motion.jpg", "nadapapa@gmail.com"],
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT)
         camera.start_recording(filename)
            
         pir.wait_for_no_motion()
@@ -41,10 +44,6 @@ try:
         p = subprocess.Popen([sys.executable, 'dropboxUploader.py', filename],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT)
-        p = subprocess.Popen(["mpack", "-s", "motion detected", "/home/pi/motion.jpg", "nadapapa@gmail.com"],
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.STDOUT)
-
         print("uploaded to Dropbox")
 finally:
     camera.close()
