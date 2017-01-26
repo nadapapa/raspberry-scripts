@@ -40,7 +40,10 @@ try:
         p = subprocess.Popen([sys.executable, 'dropboxUploader.py', filename],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT)
-        # dropboxUploader.dropboxUpload(filename)
+        p = subprocess.Popen(["mpack", "-s", "motion detected", filename, "nadapapa@gmail.com"],
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT)
+
         print("uploaded to Dropbox")
 finally:
     camera.close()
