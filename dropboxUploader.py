@@ -54,4 +54,4 @@ def dropboxUpload(fileToUpload):
 
 if __name__ == "__main__":
     import sys
-    sys.exit(dropboxUpload(sys.argv[0]))
+    sys.exit(dropboxUpload(sys.argv[1]))
