@@ -84,7 +84,6 @@ try:
         print("no motion")
         GPIO.output(relay_pin, 1)
         camera.stop_recording()
-        camera.close()
         print("uploading to Dropbox")
         dropboxUpload(filename)
         print("uploaded to Dropbox")
