@@ -18,22 +18,30 @@
 
 <?php
 
-if((bool)$_POST['on']) {
+define('PIDFILE', '/tmp/pid');
+
+if(!empty($_POST['on'])) {
     switchOn();
 }
-if((bool)$_POST['off']) {
+if(!empty($_POST['off'])) {
     switchOff();
 }
 
 
 function switchOn()
 {
-echo('on');
+    $a = exec('sudo /home/pi/raspberry-scripts/motion.py > /tmp/log 2>&1 & echo $!');
+    setPID((int)$a);
+
+    echo('PID: '.$a);
 }
 
 function switchOff()
 {
-echo('off');
+    if ($pid = getPID()) {
+        exec('sudo kill -15 ' . (int)$pid);
+        echo($pid . ' off');
+    }
 }
 
 /**
@@ -41,7 +49,7 @@ echo('off');
  */
 function setPID($pid)
 {
-
+    file_put_contents(PIDFILE, $pid);
 }
 
 /**
@@ -49,6 +57,12 @@ function setPID($pid)
  */
 function getPID()
 {
+    $pid = false;
 
+    if (file_exists(PIDFILE)) {
+        $pid = fgets(fopen(PIDFILE, 'r'));
+    }
+
+    return $pid;
 }
 ?>

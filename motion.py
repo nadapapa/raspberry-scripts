@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from gpiozero import MotionSensor
 from picamera import PiCamera
 from datetime import datetime
@@ -35,7 +37,7 @@ try:
                              stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
         camera.start_recording(filename)
-           
+
         pir.wait_for_no_motion()
         print("no motion")
         GPIO.output(relay_pin, 1)
