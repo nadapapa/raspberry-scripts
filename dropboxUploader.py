@@ -1,16 +1,19 @@
+#!/usr/bin/env python3
+
 import dropbox
 import os
 import configparser
 
+script_path = "/home/pi/raspberry-scripts/" 
 config = configparser.ConfigParser()
-config.read("config.ini")
+config.read(script_path + "config.ini")
 
 app_key = config["DROPBOX"]["app_key"]
 app_secret = config["DROPBOX"]["app_secret"]
 
 
 def dropboxAuth():
-    accessTokenFileOverwrite = open("accessToken.txt", "w+")
+    accessTokenFileOverwrite = open(script_path + "accessToken.txt", "w+")
 
     flow = dropbox.client.DropboxOAuth2FlowNoRedirect(app_key, app_secret)
 
@@ -28,17 +31,17 @@ def dropboxAuth():
     except:
         print("failed authorization, restart")
         accessTokenFileOverwrite.close()
-        os.remove("accessToken.txt")
+        os.remove(script_path + "accessToken.txt")
 
     accessTokenFileOverwrite.close()
 
 
 def dropboxUpload(fileToUpload):
-    if not os.path.isfile("accessToken.txt"):
+    if not os.path.isfile(script_path + "accessToken.txt"):
         dropboxAuth()
 
     # get access token from file
-    accessTokenFileRead = open("accessToken.txt", "r")
+    accessTokenFileRead = open(script_path + "accessToken.txt", "r")
     access_token = accessTokenFileRead.read().rstrip()
     accessTokenFileRead.close()
 

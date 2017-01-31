@@ -43,8 +43,9 @@ try:
         GPIO.output(relay_pin, 1)
         camera.stop_recording()
         print("uploading to Dropbox")
-        p = subprocess.Popen([sys.executable, 'dropboxUploader.py', filename],
-                           stdout=subprocess.PIPE,
+        log = open('/tmp/log2', 'w')
+        p = subprocess.Popen(['/home/pi/raspberry-scripts/dropboxUploader.py', filename],
+                           stdout=log,
                            stderr=subprocess.STDOUT)
         print("uploaded to Dropbox")
 finally:
