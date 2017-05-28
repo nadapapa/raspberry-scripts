@@ -33,6 +33,7 @@ try:
         pir.wait_for_motion()
         print("motion")
         GPIO.output(relay_pin, 0)
+        time.sleep(1);
         now_time = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
         filename = "/home/pi/videos/" + now_time
         camera.capture("/home/pi/motion.jpg")
